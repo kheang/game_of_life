@@ -15,10 +15,18 @@ class Cell
   end
 
   def get_x(x_pos_alpha)
-    x_pos_alpha = x_pos_alpha.scan(/\w/)
+    x_pos_alpha = (x_pos_alpha.to_s).scan(/\w/)
     x_pos_alpha_len = x_pos_alpha.length
-    x_pos_alpha = x_pos_alpha.map.with_index { |letter,index| (letter.ord - 64)*26**(x_pos_alpha_len-(index+1)) }
+    x_pos_nums = x_pos_alpha.map { |letter| letter.ord - 64 }
+    x_pos_alpha = x_pos_nums.map.with_index { |num_value,index| num_value*26**(x_pos_alpha_len-(index+1)) }
     @x_pos = x_pos_alpha.inject { |sum, value| sum + value }
   end
 
+  def ==(other_cell)
+    if @state == other_cell.state && @x_pos == other_cell.x_pos && @y_pos == other_cell.y_pos
+      true
+    else
+      false
+    end
+  end
 end
