@@ -8,4 +8,12 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
 
     assert_equal test_array, new_game.live_cells
   end
+
+  def test_build_grid
+    new_game = GameOfLife.new("Z3, D30")
+    new_game.grid_size
+
+    assert_equal 28, new_game.max_x
+    assert_equal 32, new_game.max_y
+  end
 end

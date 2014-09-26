@@ -10,7 +10,7 @@ class Cell
 
   def calc_position(position)
     x_pos_alpha = position.split(/[0-9]/)
-    get_x(x_pos_alpha[0])
+    @x_pos = get_x(x_pos_alpha[0])
     @y_pos = position.delete(x_pos_alpha[0]).to_i
   end
 
@@ -19,7 +19,7 @@ class Cell
     x_pos_alpha_len = x_pos_alpha.length
     x_pos_nums = x_pos_alpha.map { |letter| letter.ord - 64 }
     x_pos_alpha = x_pos_nums.map.with_index { |num_value,index| num_value*26**(x_pos_alpha_len-(index+1)) }
-    @x_pos = x_pos_alpha.inject { |sum, value| sum + value }
+    x_pos_alpha.inject { |sum, value| sum + value }
   end
 
   def ==(other_cell)
