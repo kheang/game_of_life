@@ -2,11 +2,15 @@ require "minitest/autorun"
 require "cell"
 
 class CellTest < MiniTest::Unit::TestCase
-  def test_cell_is_alive_or_dead
-    cell_alive = Cell.new(5,5,1)
-    assert_equal 1, cell_alive.state
+  def test_cell_is_alive_and_position
+    cell = Cell.new("C5",1)
+    assert_equal 1, cell.state
+    assert_equal 3, cell.x_pos
+    assert_equal 5, cell.y_pos
 
-    cell_dead = Cell.new(3,6,0)
-    assert_equal 0, cell_dead.state
+    cell = Cell.new("BB23",1)
+    assert_equal 1, cell.state
+    assert_equal 54, cell.x_pos
+    assert_equal 23, cell.y_pos
   end
 end
