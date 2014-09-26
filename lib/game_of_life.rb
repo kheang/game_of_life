@@ -1,5 +1,5 @@
 class GameOfLife
-  attr_reader :live_cells, :max_x, :max_y
+  attr_reader :live_cells, :max_x, :max_y, :grid
 
   def initialize(live_positions = [])
     @live_cells = []
@@ -21,7 +21,7 @@ class GameOfLife
     end
   end
 
-  def grid_size
+  def size_grid
     @max_x = 0
     @max_y = 0
     @live_cells.each do |cell|
@@ -30,5 +30,14 @@ class GameOfLife
     end
     @max_x += 2
     @max_y += 2
+  end
+
+  def build_grid
+    size_grid
+    @grid = Array.new(@max_x, Array.new(@max_y))
+  end
+
+  def populate_grid
+    
   end
 end
