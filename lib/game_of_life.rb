@@ -34,10 +34,12 @@ class GameOfLife
 
   def build_grid
     size_grid
-    @grid = Array.new(@max_x, Array.new(@max_y))
+    @grid = Array.new(@max_x, Array.new(@max_y,0))
   end
 
   def populate_grid
-    
+    @live_cells.each do |live_cell|
+      @grid[live_cell.x_pos - 1][live_cell.y_pos - 1] = 1
+    end 
   end
 end
