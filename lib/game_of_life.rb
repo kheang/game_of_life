@@ -1,8 +1,9 @@
 class GameOfLife
-  attr_reader :live_cells, :max_x, :max_y, :grid
+  attr_reader :live_cells, :live_cells_next_gen, :max_x, :max_y, :grid, :grid_next_gen
 
   def initialize(initial_positions)
     @live_cells = []
+    @live_cells_next_gen = []
     make_live_cells(initial_positions)
   end
 
@@ -10,6 +11,22 @@ class GameOfLife
     puts "Welcome to the Game of Life. Enter initial cells seperated by one space (e.g. 'C2 F9 AB5'):"
     input = $stdin.gets.chomp
     make_live_cells(input)
+
+    gen = 0
+
+    until @live_cells == []
+      gen += 1
+      size_grid
+      build_grid
+      populate_grid
+      puts "generation #{gen}: #{@grid}"
+      check_live_cells
+      check_dead_cells
+      @grid = @grid_next_gen
+      @grid_next_gen = []
+      @live_cells = @live_cells_next_gen
+      @live_cells_next_gen = []
+    end
   end
 
   def make_live_cells(positions_str)
@@ -46,12 +63,13 @@ class GameOfLife
       @max_x = cell[0] if cell[0] > @max_x
       @max_y = cell[1] if cell[1] > @max_y
     end
-    @max_x += 2
-    @max_y += 2
+    @max_x += 4
+    @max_y += 4
   end
 
   def build_grid
     @grid = Array.new(@max_x) {Array.new(@max_y,0)}
+    @grid_next_gen = Array.new(@max_x) {Array.new(@max_y,0)}
   end
 
   def populate_grid
@@ -61,26 +79,58 @@ class GameOfLife
   end
 
   def check_live_cells
-    @current_grid = @grid
     @live_cells.each do |live_cell|
       x = live_cell[0]
       y = live_cell[1]
-      live_neighbors = get_neighbor_count(@current_grid,x,y)
-      if live_neighbors < 2 || live_neighbors > 3
-        @grid[x][y] = 0
+      live_neighbors = get_neighbor_count(@grid,x,y)
+      if live_neighbors == 2 || live_neighbors == 3
+        @grid_next_gen[x][y] = 1
+        @live_cells_next_gen << [x,y]
       end
     end
   end
 
+  def get_neighbors(x,y)
+    neighbors = []
+    neighbors << [x - 1,y - 1]
+    neighbors << [x - 1,y]
+    neighbors << [x - 1,y + 1]
+    neighbors << [x,y - 1]
+    neighbors << [x,y + 1]
+    neighbors << [x + 1, y - 1]
+    neighbors << [x + 1, y]
+    neighbors << [x + 1, y + 1]
+    neighbors
+  end
+
   def get_neighbor_count(grid,x,y)
     live_neighbors = 0
-    live_neighbors += grid[x - 1][y - 1]
-    live_neighbors += grid[x - 1][y]
-    live_neighbors += grid[x - 1][y + 1]
-    live_neighbors += grid[x][y - 1]
-    live_neighbors += grid[x][y + 1]
-    live_neighbors += grid[x + 1][y - 1]
-    live_neighbors += grid[x + 1][y]
-    live_neighbors += grid[x + 1][y + 1]
+    neighbors = get_neighbors(x,y)
+
+    neighbors.each do |neighbor|
+      x = neighbor[0]
+      y = neighbor[1]
+      live_neighbors += grid[x][y]
+    end
+    live_neighbors
+  end
+
+  def check_dead_cells
+    @live_cells.each do |live_cell|
+      x = live_cell[0]
+      y = live_cell[1]
+      neighbors = get_neighbors(x,y)
+
+      neighbors.each do |neighbor|
+        count = get_neighbor_count(@grid,neighbor[0],neighbor[1])
+        if count == 3
+          @grid_next_gen[neighbor[0]][neighbor[1]] = 1
+          @live_cells_next_gen << [neighbor[0],neighbor[1]]
+        end
+      end
+    end
   end
 end
+
+game = GameOfLife.new("C1 C2 C3")
+game.run
