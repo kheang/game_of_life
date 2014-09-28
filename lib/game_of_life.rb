@@ -63,20 +63,24 @@ class GameOfLife
   def check_live_cells
     @current_grid = @grid
     @live_cells.each do |live_cell|
-      live_neighbors = 0
       x = live_cell[0]
       y = live_cell[1]
-      live_neighbors += @current_grid[x - 1][y - 1]
-      live_neighbors += @current_grid[x - 1][y]
-      live_neighbors += @current_grid[x - 1][y + 1]
-      live_neighbors += @current_grid[x][y - 1]
-      live_neighbors += @current_grid[x][y + 1]
-      live_neighbors += @current_grid[x + 1][y - 1]
-      live_neighbors += @current_grid[x + 1][y]
-      live_neighbors += @current_grid[x + 1][y + 1]
+      live_neighbors = get_neighbor_count(@current_grid,x,y)
       if live_neighbors < 2 || live_neighbors > 3
         @grid[x][y] = 0
       end
     end
+  end
+
+  def get_neighbor_count(grid,x,y)
+    live_neighbors = 0
+    live_neighbors += grid[x - 1][y - 1]
+    live_neighbors += grid[x - 1][y]
+    live_neighbors += grid[x - 1][y + 1]
+    live_neighbors += grid[x][y - 1]
+    live_neighbors += grid[x][y + 1]
+    live_neighbors += grid[x + 1][y - 1]
+    live_neighbors += grid[x + 1][y]
+    live_neighbors += grid[x + 1][y + 1]
   end
 end

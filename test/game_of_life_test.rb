@@ -32,6 +32,7 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
     new_game.populate_grid
     grid = Array.new(5) {Array.new(5,0)}
     grid[3][3] = 1
+    
     assert_equal grid, new_game.grid
   end
 
@@ -42,6 +43,7 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
     new_game.populate_grid
     new_game.check_live_cells
     grid = Array.new(5) {Array.new(5,0)}
+
     assert_equal grid, new_game.grid
   end
 
