@@ -35,7 +35,7 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
 
     assert_equal grid, new_game.grid
   end
-  
+
   def test_get_surrounding_neighbors
     new_game = GameOfLife.new("C3")
     new_game_neighbors = new_game.get_neighbors(3,3)

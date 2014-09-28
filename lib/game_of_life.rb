@@ -46,7 +46,6 @@ class GameOfLife
       print "\n"
       y += 1
     end
-    $stdout.flush
     sleep(1)
   end
 
@@ -73,14 +72,8 @@ class GameOfLife
   end
 
   def size_grid
-    @max_x = 0
-    @max_y = 0
-    @live_cells.each do |cell|
-      @max_x = cell[0] if cell[0] > @max_x
-      @max_y = cell[1] if cell[1] > @max_y
-    end
-    @max_x += 4
-    @max_y += 4
+    @max_x = @live_cells.max_by{ |cell| cell[0] }[0] + 4
+    @max_y = @live_cells.max_by{ |cell| cell[1] }[1] + 4
   end
 
   def build_grid
