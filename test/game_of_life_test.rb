@@ -35,7 +35,7 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
 
     assert_equal grid, new_game.grid
   end
-
+  
   def test_get_surrounding_neighbors
     new_game = GameOfLife.new("C3")
     new_game_neighbors = new_game.get_neighbors(3,3)
@@ -48,7 +48,7 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
     new_game.size_grid
     new_game.build_grid
     new_game.populate_grid
-    neighbor_count = new_game.get_neighbor_count(new_game.grid,4,4)
+    neighbor_count = new_game.get_neighbor_count(4,4)
 
     assert_equal 3, neighbor_count
   end

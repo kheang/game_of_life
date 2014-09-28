@@ -98,7 +98,7 @@ class GameOfLife
     @live_cells.each do |live_cell|
       x = live_cell[0]
       y = live_cell[1]
-      live_neighbors = get_neighbor_count(@grid,x,y)
+      live_neighbors = get_neighbor_count(x,y)
       if live_neighbors == 2 || live_neighbors == 3
         @grid_next_gen[x][y] = 1
         @live_cells_next_gen << [x,y]
@@ -107,47 +107,36 @@ class GameOfLife
   end
 
   def get_neighbors(x,y)
-    neighbors = []
-    neighbors << [x - 1,y - 1]
-    neighbors << [x - 1,y]
-    neighbors << [x - 1,y + 1]
-    neighbors << [x,y - 1]
-    neighbors << [x,y + 1]
-    neighbors << [x + 1, y - 1]
-    neighbors << [x + 1, y]
-    neighbors << [x + 1, y + 1]
-    neighbors
+    neighbors = [[x - 1,y - 1],[x - 1,y],[x - 1,y + 1],[x,y - 1],[x,y + 1],[x + 1, y - 1],[x + 1, y],[x + 1, y + 1]]
   end
 
-  def get_neighbor_count(grid,x,y)
+  def get_neighbor_count(x,y)
     live_neighbors = 0
     neighbors = get_neighbors(x,y)
 
     neighbors.each do |neighbor|
-      # x = neighbor[0]
-      # y = neighbor[1]
-      live_neighbors += grid[neighbor[0]][neighbor[1]]
+      live_neighbors += @grid[neighbor[0]][neighbor[1]]
     end
     live_neighbors
   end
 
   def check_dead_cells
+    neighbors_list = []
     @live_cells.each do |live_cell|
-      x = live_cell[0]
-      y = live_cell[1]
-      neighbors = get_neighbors(x,y)
+      neighbors = get_neighbors(live_cell[0],live_cell[1])
+      neighbors_list = neighbors_list | neighbors
+    end
 
-      neighbors.each do |neighbor|
-        count = get_neighbor_count(@grid,neighbor[0],neighbor[1])
-        if count == 3
-          @grid_next_gen[neighbor[0]][neighbor[1]] = 1
-          @live_cells_next_gen << [neighbor[0],neighbor[1]]
-        end
+    neighbors_list.each do |neighbor|
+      count = get_neighbor_count(neighbor[0],neighbor[1])
+      if count == 3
+        @grid_next_gen[neighbor[0]][neighbor[1]] = 1
+        @live_cells_next_gen << [neighbor[0],neighbor[1]]
       end
     end
   end
 
 end
-#
-# game = GameOfLife.new
-# game.run
+
+game = GameOfLife.new
+game.run
