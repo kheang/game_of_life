@@ -66,7 +66,7 @@ class GameOfLifeTest < MiniTest::Unit::TestCase
     assert_equal grid, new_game.grid_next_gen
     assert_equal [[3,2],[3,3]], new_game.live_cells_next_gen
   end
-  #
+
   def test_check_dead_cells
     new_game = GameOfLife.new("C1 C2 C3")
     new_game.size_grid

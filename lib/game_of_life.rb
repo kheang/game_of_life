@@ -1,10 +1,12 @@
 class GameOfLife
   attr_reader :live_cells, :live_cells_next_gen, :max_x, :max_y, :grid, :grid_next_gen
 
-  def initialize(initial_positions)
+  def initialize(initial_positions = [])
     @live_cells = []
     @live_cells_next_gen = []
-    make_live_cells(initial_positions)
+    if initial_positions != []
+      make_live_cells(initial_positions)
+    end
   end
 
   def run
@@ -19,7 +21,7 @@ class GameOfLife
       size_grid
       build_grid
       populate_grid
-      puts "generation #{gen}: #{@grid}"
+      print_grid(gen)
       check_live_cells
       check_dead_cells
       @grid = @grid_next_gen
@@ -29,12 +31,29 @@ class GameOfLife
     end
   end
 
+  def print_grid(gen)
+    system('clear')
+    puts "Generation: #{gen}\n"
+    y = 0
+    until y > @grid[0].length
+      @grid.each do |row|
+        if row[y] == 1
+          print "x"
+        else
+          print "."
+        end
+      end
+      print "\n"
+      y += 1
+    end
+    $stdout.flush
+    sleep(1)
+  end
+
   def make_live_cells(positions_str)
     positions_arr = positions_str.split(/\ /)
     positions_arr.each do |cell_position|
-      if cell_position != ""
-        @live_cells << get_x_y(cell_position)
-      end
+      @live_cells << get_x_y(cell_position)
     end
   end
 
@@ -42,16 +61,13 @@ class GameOfLife
     x_y = position.split(/[0-9]/)
     x_pos = get_x(x_y[0])
     y_pos = position.delete(x_y[0]).to_i
-    positions_array = []
-    positions_array[0] = x_pos
-    positions_array[1] = y_pos
-    positions_array
+    positions_array = [x_pos,y_pos]
   end
 
   def get_x(x_alpha)
     x_alpha = (x_alpha.to_s).scan(/\w/)
     x_alpha_len = x_alpha.length
-    x_pos_nums = x_alpha.map { |letter| letter.ord - 64 }
+    x_pos_nums = x_alpha.map { |letter| letter.upcase.ord - 64 }
     x_pos_nums = x_pos_nums.map.with_index { |num_value,index| num_value*26**(x_alpha_len-(index+1)) }
     x_pos_nums.inject { |sum, value| sum + value }
   end
@@ -108,9 +124,9 @@ class GameOfLife
     neighbors = get_neighbors(x,y)
 
     neighbors.each do |neighbor|
-      x = neighbor[0]
-      y = neighbor[1]
-      live_neighbors += grid[x][y]
+      # x = neighbor[0]
+      # y = neighbor[1]
+      live_neighbors += grid[neighbor[0]][neighbor[1]]
     end
     live_neighbors
   end
@@ -130,7 +146,8 @@ class GameOfLife
       end
     end
   end
-end
 
-game = GameOfLife.new("C1 C2 C3")
-game.run
+end
+#
+# game = GameOfLife.new
+# game.run
