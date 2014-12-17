@@ -2,7 +2,7 @@
 
 This is Conway's Game of Life, a classic computer science exercise, written in Ruby. The game runs in the command-line interface.
 
-More about the game: [link](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
+More about the game: [Wikipedia: Conway's Game of Life](https://en.wikipedia.org/wiki/Conway's_Game_of_Life)
 
 The game was a weekend project after completing week 2 of The Iron Yard Academy's (TIY) Ruby on Rails track in Durham, NC.
 
@@ -19,7 +19,7 @@ Your initial state is a set of cells that are alive. For each passing generation
 
 While this game is normally played on an infinite grid, you do not have to necessarily match that model. You could play on a fixed grid (everything outside the grid is dead) or a toroidal grid (each side loops around to the opposite side.)
 
-After you calculate each generation, you should print it out to the screen. The easiest way to do this would be with dots and crosses, like so: https://gist.github.com/cndreisbach/52efbc6670918102dd5f . The sample grid at that link is 20x10 -- you can make any size that makes sense to you.
+After you calculate each generation, you should print it out to the screen.
 
 You should ask the user to hit enter to go to the next generation, or you could have it keep printing them one after another, with a second wait in between them -- your choice.
 
